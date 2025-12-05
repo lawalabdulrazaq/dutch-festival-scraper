@@ -17,7 +17,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://YOUR_RENDER_URL_HERE/run",
+        "url": "=https://dutch-festival-scraper.onrender.com/run",
         "sendBody": false,
         "responseFormat": "json"
       },

@@ -22,7 +22,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://YOUR_RENDER_URL_HERE/sync-all",
+        "url": "=https://dutch-festival-scraper.onrender.com/sync-all",
         "sendBody": false,
         "responseFormat": "json"
       },
