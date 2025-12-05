@@ -1,0 +1,65 @@
+{
+  "name": "Dutch Festival Collector - Full Sync (Initial Load Only)",
+  "nodes": [
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "mode": "everyDay"
+            }
+          ]
+        }
+      },
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://YOUR_RENDER_URL_HERE/sync-all",
+        "sendBody": false,
+        "responseFormat": "json"
+      },
+      "name": "Full Sync - All Events",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        450,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Full Sync - All Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "de6d0c27-a3c3-401e-8e30-1a2c5b0e0c3e",
+  "meta": {
+    "instanceId": "00000000000000000000000000000000"
+  },
+  "tags": [
+    "setup",
+    "events",
+    "dutch",
+    "initial-load"
+  ]
+}

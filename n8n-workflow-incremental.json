@@ -1,0 +1,59 @@
+{
+  "name": "Dutch Festival Collector - Incremental",
+  "nodes": [
+    {
+      "parameters": {
+        "interval": [2],
+        "unit": "hours"
+      },
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://YOUR_RENDER_URL_HERE/run",
+        "sendBody": false,
+        "responseFormat": "json"
+      },
+      "name": "Trigger Scraper - Incremental",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        450,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Trigger Scraper - Incremental",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "de6d0c27-a3c3-401e-8e30-1a2c5b0e0c3d",
+  "meta": {
+    "instanceId": "00000000000000000000000000000000"
+  },
+  "tags": [
+    "production",
+    "events",
+    "dutch"
+  ]
+}
