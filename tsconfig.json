@@ -9,8 +9,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": ["ES2021"],
-    "types": ["node"]
+    "lib": ["ES2021"]
   },
   "include": ["src"]
 }
