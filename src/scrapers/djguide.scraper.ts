@@ -30,29 +30,29 @@ export class DjguideScraper extends BaseScraper {
           const city = cleanText(match[6]); // City
 
           // Parse date
-          const datum_evenement = parseShortDate(dateStr);
+          const event_date = parseShortDate(dateStr);
 
           // Skip if no valid data
-          if (!datum_evenement || !eventName || eventName.length < 3) {
+          if (!event_date || !eventName || eventName.length < 3) {
             continue;
           }
 
           // Only future events
-          if (!isFutureDate(datum_evenement)) {
+          if (!isFutureDate(event_date)) {
             continue;
           }
 
           const locatie_evenement = `${venue}, ${city}`;
-          const sleutel = generateSleutel(eventName, datum_evenement, locatie_evenement);
+          const sleutel = generateSleutel(eventName, event_date, locatie_evenement);
 
           events.push({
-            datum_evenement,
+            event_date,
             evenement_naam: eventName,
             locatie_evenement,
             organisator: '',
             contact_organisator: '',
             bron: 'Djguide.nl',
-            duur_evenement: '1 dag',
+            duur_evenement: 1,
             sleutel,
           });
 

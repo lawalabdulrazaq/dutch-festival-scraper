@@ -34,8 +34,8 @@ export class PartyflockScraper extends BaseScraper {
             dateText = $el.attr('data-date') || '';
           }
           
-          const datum_evenement = normalizeDate(dateText);
-          if (!datum_evenement || !isFutureDate(datum_evenement)) return;
+          const event_date = normalizeDate(dateText);
+          if (!event_date || !isFutureDate(event_date)) return;
           
           // Extract location
           const locatie_evenement = cleanText(
@@ -52,16 +52,16 @@ export class PartyflockScraper extends BaseScraper {
             $el.find('[class*="contact"], [class*="email"]').text() || $el.text()
           ) || 'contact@partyflock.nl';
           
-          const sleutel = generateSleutel(evenement_naam, datum_evenement, locatie_evenement);
+          const sleutel = generateSleutel(evenement_naam, event_date, locatie_evenement);
           
           events.push({
-            datum_evenement,
+            event_date,
             evenement_naam,
             locatie_evenement,
             organisator: organizerText || 'Organisator onbekend',
             contact_organisator: contactText,
             bron: 'Partyflock.nl',
-            duur_evenement: '1 dag',
+            duur_evenement: 1,
             sleutel,
           });
         } catch (error) {

@@ -35,8 +35,8 @@ export class ResidentAdvisorScraper extends BaseScraper {
             dateText = cleanText($el.find('p').text()).match(/\d{1,2}\s+\w+\s+\d{4}/)?.[0] || '';
           }
           
-          const datum_evenement = normalizeDate(dateText);
-          if (!datum_evenement || !isFutureDate(datum_evenement)) return;
+          const event_date = normalizeDate(dateText);
+          if (!event_date || !isFutureDate(event_date)) return;
           
           // Extract location from article text
           const allText = cleanText($el.text());
@@ -47,16 +47,16 @@ export class ResidentAdvisorScraper extends BaseScraper {
             $el.find('a[href*="/promoter/"]').first().text()
           ) || 'Organisator onbekend';
           
-          const sleutel = generateSleutel(evenement_naam, datum_evenement, locatie_evenement);
+          const sleutel = generateSleutel(evenement_naam, event_date, locatie_evenement);
           
           events.push({
-            datum_evenement,
+            event_date,
             evenement_naam,
             locatie_evenement,
             organisator,
             contact_organisator: 'info@ra.co',
             bron: 'Resident Advisor',
-            duur_evenement: '1 dag',
+            duur_evenement: 1,
             sleutel,
           });
         } catch (error) {

@@ -27,28 +27,28 @@ export class TicketSwapScraper extends BaseScraper {
       for (const match of eventMatches) {
         try {
           const evenement_naam = cleanText(match[1] || '');
-          const datum_evenement = match[2] || '';
+          const event_date = match[2] || '';
           const city = cleanText(match[3] || 'Nederland');
 
           // Validate
           if (!evenement_naam || evenement_naam.length < 3) continue;
-          if (!datum_evenement || !isFutureDate(datum_evenement)) continue;
+          if (!event_date || !isFutureDate(event_date)) continue;
 
           const locatie_evenement = city;
-          const sleutel = generateSleutel(evenement_naam, datum_evenement, locatie_evenement);
+          const sleutel = generateSleutel(evenement_naam, event_date, locatie_evenement);
 
           // Avoid duplicates on same page
           if (processedSleutels.has(sleutel)) continue;
           processedSleutels.add(sleutel);
 
           events.push({
-            datum_evenement,
+            event_date,
             evenement_naam,
             locatie_evenement,
             organisator: 'TicketSwap',
             contact_organisator: 'ticketswap@ticketswap.nl',
             bron: 'TicketSwap.nl',
-            duur_evenement: '1 dag',
+            duur_evenement: 1,
             sleutel,
           });
         } catch (error) {

@@ -38,8 +38,8 @@ export class TimeOutScraper extends BaseScraper {
             dateText = fullText.match(/\d{1,2}\s+(january|february|march|april|may|june|july|august|september|october|november|december)\s+\d{4}/i)?.[0] || '';
           }
           
-          const datum_evenement = normalizeDate(dateText);
-          if (!datum_evenement || !isFutureDate(datum_evenement)) return;
+          const event_date = normalizeDate(dateText);
+          if (!event_date || !isFutureDate(event_date)) return;
           
           // Extract location
           let locatie_evenement = cleanText(
@@ -55,16 +55,16 @@ export class TimeOutScraper extends BaseScraper {
             $el.find('span, p').eq(1).text()
           ) || 'Organisator onbekend';
           
-          const sleutel = generateSleutel(evenement_naam, datum_evenement, locatie_evenement);
+          const sleutel = generateSleutel(evenement_naam, event_date, locatie_evenement);
           
           events.push({
-            datum_evenement,
+            event_date,
             evenement_naam,
             locatie_evenement,
             organisator,
             contact_organisator: 'info@timeout.nl',
             bron: 'TimeOut',
-            duur_evenement: '1 dag',
+            duur_evenement: 1,
             sleutel,
           });
         } catch (error) {

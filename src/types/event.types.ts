@@ -2,13 +2,13 @@
  * Standard event format that matches client requirements
  */
 export interface FestivalEvent {
-  datum_evenement: string;        // YYYY-MM-DD format
+  event_date: string;              // YYYY-MM-DD format
   evenement_naam: string;          // Event name
   locatie_evenement: string;       // Location (venue, city)
   organisator: string;             // Organizer name
   contact_organisator: string;     // Contact email/phone
   bron: string;                    // Source (e.g., "Djguide.nl")
-  duur_evenement: string;          // Duration (e.g., "1 dag", "2 dagen")
+  duur_evenement: number;          // Duration in days (e.g., 1, 2, 3)
   sleutel: string;                 // Unique key for deduplication
 }
 
