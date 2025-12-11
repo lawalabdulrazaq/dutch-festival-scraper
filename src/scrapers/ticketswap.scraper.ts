@@ -2,6 +2,7 @@ import { BaseScraper } from './base.scraper';
 import { FestivalEvent } from '../types/event.types';
 import { isFutureDate } from '../utils/date.utils';
 import { generateSleutel, cleanText } from '../utils/string.utils';
+import { normalizeEvent } from '../utils/normalize';
 import { logger } from '../utils/logger';
 
 /**
@@ -35,22 +36,25 @@ export class TicketSwapScraper extends BaseScraper {
           if (!event_date || !isFutureDate(event_date)) continue;
 
           const locatie_evenement = city;
-          const sleutel = generateSleutel(evenement_naam, event_date, locatie_evenement);
+          
+          // Use normalizeEvent to ensure proper formatting and field names
+          const event = normalizeEvent({
+            name: evenement_naam,
+            date: event_date,
+            location: locatie_evenement,
+            organizer: 'TicketSwap',
+            contact: 'ticketswap@ticketswap.nl',
+            source: 'TicketSwap.nl',
+            duration: '1'
+          });
+
+          const sleutel = event.sleutel;
 
           // Avoid duplicates on same page
           if (processedSleutels.has(sleutel)) continue;
           processedSleutels.add(sleutel);
 
-          events.push({
-            event_date,
-            evenement_naam,
-            locatie_evenement,
-            organisator: 'TicketSwap',
-            contact_organisator: 'ticketswap@ticketswap.nl',
-            bron: 'TicketSwap.nl',
-            duur_evenement: 1,
-            sleutel,
-          });
+          events.push(event);
         } catch (error) {
           // Skip problematic matches
         }

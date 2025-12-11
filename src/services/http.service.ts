@@ -2,6 +2,7 @@ import axios from 'axios';
 import { config } from '../config/config';
 import { FestivalEvent } from '../types/event.types';
 import { logger } from '../utils/logger';
+import { transformEventForClient } from '../utils/event-transform';
 
 /**
  * HTTP service for making requests
@@ -68,6 +69,9 @@ class HttpService {
         headers['Authorization'] = `Bearer ${config.client.apiKey}`;
       }
 
+      // Transform event to client format (datum_evenement -> event_date, organisateur -> organisator)
+      const clientEvent = transformEventForClient(event);
+
       logger.debug(`Sending to ${config.client.endpoint}`, {
         event: event.evenement_naam,
         headers: Object.keys(headers),
@@ -75,7 +79,7 @@ class HttpService {
 
       const response = await axios.post(
         config.client.endpoint,
-        event,
+        clientEvent,
         { headers, timeout: 10000 }
       );
 

@@ -1,9 +1,11 @@
+import { load } from 'cheerio';
 import { BaseScraper } from './base.scraper';
 import { FestivalEvent } from '../types/event.types';
 import { normalizeDate, isFutureDate } from '../utils/date.utils';
 import { generateSleutel, cleanText } from '../utils/string.utils';
+import { normalizeText, normalizeEvent } from '../utils/normalize';
+import { httpService } from '../services/http.service';
 import { logger } from '../utils/logger';
-import * as cheerio from 'cheerio';
 
 /**
  * Scraper for Eventbrite Netherlands
@@ -13,7 +15,7 @@ export class EventbriteScraper extends BaseScraper {
   async scrape(): Promise<FestivalEvent[]> {
     const html = await this.fetchHtml();
     const events: FestivalEvent[] = [];
-    const $ = cheerio.load(html);
+    const $ = load(html);
 
     try {
       // Eventbrite uses div cards for events
@@ -71,20 +73,20 @@ export class EventbriteScraper extends BaseScraper {
           
           // Extract contact (try to find organizer link or email)
           const organizerLink = $el.find('a[href*="/organizer/"]').attr('href') || '';
-          const contactText = organizerLink ? `https://eventbrite.nl${organizerLink}` : '';
+          const contactText = organizerLink ? `https://eventbrite.nl${organizerLink}` : 'info@eventbrite.nl';
           
-          const sleutel = generateSleutel(evenement_naam, event_date, locatie_evenement);
-          
-          events.push({
-            event_date,
-            evenement_naam,
-            locatie_evenement,
-            organisator,
-            contact_organisator: contactText || 'info@eventbrite.nl',
-            bron: 'Eventbrite',
-            duur_evenement: 1,
-            sleutel,
+          // Use normalizeEvent to ensure proper formatting and field names
+          const event = normalizeEvent({
+            name: evenement_naam,
+            date: event_date,
+            location: locatie_evenement,
+            organizer: organisator,
+            contact: contactText,
+            source: 'Eventbrite',
+            duration: '1'
           });
+          
+          events.push(event);
         } catch (error) {
           // Skip problematic events
         }

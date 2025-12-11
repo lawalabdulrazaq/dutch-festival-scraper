@@ -6,7 +6,7 @@ import { logger } from '../utils/logger';
  * Abstract base class for all scrapers
  */
 export abstract class BaseScraper {
-  protected config: ScraperConfig;
+  public config: ScraperConfig;
 
   constructor(config: ScraperConfig) {
     this.config = config;

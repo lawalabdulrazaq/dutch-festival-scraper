@@ -2,10 +2,12 @@ import { BaseScraper } from './base.scraper';
 import { DjguideScraper } from './djguide.scraper';
 import { FestivalFansScraper } from './festivalfans.scraper';
 import { TicketSwapScraper } from './ticketswap.scraper';
-import { PartyflockScraper } from './partyflock.scraper';
+import { PartyFlockScraper } from './partyflock.scraper';
 import { ResidentAdvisorScraper } from './resident-advisor.scraper';
 import { EventbriteScraper } from './eventbrite.scraper';
 import { TimeOutScraper } from './timeout.scraper';
+import { FestivalInfoScraper } from './festivalinfo.scraper';
+import { TicketMasterScraper } from './ticketmaster.scraper';
 import { config } from '../config/config';
 import { ScraperConfig } from '../types/event.types';
 
@@ -31,7 +33,7 @@ export function getScrapers(): BaseScraper[] {
         scrapers.push(new TicketSwapScraper(sourceConfig));
         break;
       case 'partyflock':
-        scrapers.push(new PartyflockScraper(sourceConfig));
+        scrapers.push(new PartyFlockScraper(sourceConfig));
         break;
       case 'resident advisor':
         scrapers.push(new ResidentAdvisorScraper(sourceConfig));
@@ -42,6 +44,12 @@ export function getScrapers(): BaseScraper[] {
       case 'timeout':
         scrapers.push(new TimeOutScraper(sourceConfig));
         break;
+      case 'festivalinfo':
+        scrapers.push(new FestivalInfoScraper(sourceConfig));
+        break;
+      case 'ticketmaster':
+        scrapers.push(new TicketMasterScraper(sourceConfig));
+        break;
       default:
         console.warn(`Unknown scraper: ${sourceConfig.name}`);
     }
@@ -50,4 +58,4 @@ export function getScrapers(): BaseScraper[] {
   return scrapers;
 }
 
-export { BaseScraper, DjguideScraper, FestivalFansScraper, TicketSwapScraper, PartyflockScraper, ResidentAdvisorScraper, EventbriteScraper, TimeOutScraper };
+export { BaseScraper, DjguideScraper, FestivalFansScraper, TicketSwapScraper, PartyFlockScraper, ResidentAdvisorScraper, EventbriteScraper, TimeOutScraper, FestivalInfoScraper, TicketMasterScraper };

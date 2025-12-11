@@ -2,6 +2,7 @@ import { BaseScraper } from './base.scraper';
 import { FestivalEvent } from '../types/event.types';
 import { normalizeDate, isFutureDate } from '../utils/date.utils';
 import { generateSleutel, cleanText } from '../utils/string.utils';
+import { normalizeEvent } from '../utils/normalize';
 import { logger } from '../utils/logger';
 import * as cheerio from 'cheerio';
 
@@ -52,18 +53,18 @@ export class FestivalFansScraper extends BaseScraper {
             $el.find('.contact, .email, [class*="contact"]').first().text()
           );
           
-          const sleutel = generateSleutel(evenement_naam, event_date, locatie_evenement);
-          
-          events.push({
-            event_date,
-            evenement_naam,
-            locatie_evenement,
-            organisator: organizerText || 'Organisator onbekend',
-            contact_organisator: contactText || 'info@festivalalfans.nl',
-            bron: 'FestivalFans.nl',
-            duur_evenement: 1,
-            sleutel,
+          // Use normalizeEvent to ensure proper formatting and field names
+          const event = normalizeEvent({
+            name: evenement_naam,
+            date: event_date,
+            location: locatie_evenement,
+            organizer: organizerText,
+            contact: contactText,
+            source: 'FestivalFans.nl',
+            duration: '1'
           });
+
+          events.push(event);
         } catch (error) {
           // Skip problematic events
         }

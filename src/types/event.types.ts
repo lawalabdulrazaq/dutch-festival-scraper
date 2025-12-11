@@ -1,11 +1,12 @@
 /**
  * Standard event format that matches client requirements
+ * Field names match client's N8N workflow mapping
  */
 export interface FestivalEvent {
-  event_date: string;              // YYYY-MM-DD format
+  datum_evenement: string;         // YYYY-MM-DD format (client uses datum_evenement)
   evenement_naam: string;          // Event name
   locatie_evenement: string;       // Location (venue, city)
-  organisator: string;             // Organizer name
+  organisateur: string;            // Organizer name (client uses organisateur)
   contact_organisator: string;     // Contact email/phone
   bron: string;                    // Source (e.g., "Djguide.nl")
   duur_evenement: number;          // Duration in days (e.g., 1, 2, 3)
@@ -32,7 +33,8 @@ export interface RawEvent {
  */
 export interface ProcessedEvent {
   sleutel: string;
-  processed_at: string;
+  processed_at: string; // ISO datetime
+  created_at?: string;
 }
 
 /**

@@ -2,6 +2,7 @@ import { BaseScraper } from './base.scraper';
 import { FestivalEvent } from '../types/event.types';
 import { normalizeDate, isFutureDate } from '../utils/date.utils';
 import { generateSleutel, cleanText } from '../utils/string.utils';
+import { normalizeEvent } from '../utils/normalize';
 import { logger } from '../utils/logger';
 import * as cheerio from 'cheerio';
 
@@ -43,22 +44,22 @@ export class ResidentAdvisorScraper extends BaseScraper {
           let locatie_evenement = allText.match(/Amsterdam|Rotterdam|Utrecht|Den Haag|Groningen|Leeuwarden|Maastricht|Eindhoven/)?.[0] || 'Nederland';
           
           // Extract organizer
-          const organisator = cleanText(
+          const organizerText = cleanText(
             $el.find('a[href*="/promoter/"]').first().text()
-          ) || 'Organisator onbekend';
+          );
           
-          const sleutel = generateSleutel(evenement_naam, event_date, locatie_evenement);
-          
-          events.push({
-            event_date,
-            evenement_naam,
-            locatie_evenement,
-            organisator,
-            contact_organisator: 'info@ra.co',
-            bron: 'Resident Advisor',
-            duur_evenement: 1,
-            sleutel,
+          // Use normalizeEvent to ensure proper formatting and field names
+          const event = normalizeEvent({
+            name: evenement_naam,
+            date: event_date,
+            location: locatie_evenement,
+            organizer: organizerText,
+            contact: 'info@ra.co',
+            source: 'Resident Advisor',
+            duration: '1'
           });
+
+          events.push(event);
         } catch (error) {
           // Skip problematic events
         }

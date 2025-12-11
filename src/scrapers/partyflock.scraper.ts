@@ -2,6 +2,7 @@ import { BaseScraper } from './base.scraper';
 import { FestivalEvent } from '../types/event.types';
 import { normalizeDate, isFutureDate } from '../utils/date.utils';
 import { generateSleutel, cleanText, extractEmail } from '../utils/string.utils';
+import { normalizeEvent } from '../utils/normalize';
 import { logger } from '../utils/logger';
 import * as cheerio from 'cheerio';
 
@@ -9,7 +10,7 @@ import * as cheerio from 'cheerio';
  * Scraper for Partyflock.nl
  * Scrapes parties, festivals, and events
  */
-export class PartyflockScraper extends BaseScraper {
+export class PartyFlockScraper extends BaseScraper {
   async scrape(): Promise<FestivalEvent[]> {
     const html = await this.fetchHtml();
     const events: FestivalEvent[] = [];
@@ -52,18 +53,18 @@ export class PartyflockScraper extends BaseScraper {
             $el.find('[class*="contact"], [class*="email"]').text() || $el.text()
           ) || 'contact@partyflock.nl';
           
-          const sleutel = generateSleutel(evenement_naam, event_date, locatie_evenement);
-          
-          events.push({
-            event_date,
-            evenement_naam,
-            locatie_evenement,
-            organisator: organizerText || 'Organisator onbekend',
-            contact_organisator: contactText,
-            bron: 'Partyflock.nl',
-            duur_evenement: 1,
-            sleutel,
+          // Use normalizeEvent to ensure proper formatting and field names
+          const event = normalizeEvent({
+            name: evenement_naam,
+            date: event_date,
+            location: locatie_evenement,
+            organizer: organizerText,
+            contact: contactText,
+            source: 'Partyflock.nl',
+            duration: '1'
           });
+          
+          events.push(event);
         } catch (error) {
           // Skip problematic events
         }

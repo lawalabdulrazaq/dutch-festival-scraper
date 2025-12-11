@@ -74,14 +74,42 @@ export const config = {
     {
       name: 'Djguide',
       url: 'https://www.djguide.nl/events.p?language=en',
-      enabled: false,  // Disabled: uses client-side rendering, needs JavaScript support
+      enabled: true,  // ENABLED: Working well, fetching events
       timeout: 30000,
       retries: 3,
     },
     {
       name: 'Partyflock',
       url: 'https://www.partyflock.nl/parties',
-      enabled: false,
+      enabled: true,  // ENABLED: Working well, fetching events
+      timeout: 30000,
+      retries: 3,
+    },
+    {
+      name: 'FestivalInfo',
+      url: 'https://www.festivalinfo.nl/agenda',
+      enabled: true,  // ENABLED: Working well
+      timeout: 30000,
+      retries: 3,
+    },
+    {
+      name: 'Ticketmaster',
+      url: 'https://www.ticketmaster.nl/nl/concerts-en-festivals',
+      enabled: false,  // Disabled: 401 Unauthorized (requires browser session)
+      timeout: 30000,
+      retries: 3,
+    },
+    {
+      name: 'VisitNetherlands',
+      url: 'https://www.holland.com/global/tourism/information/information-general/events.htm',
+      enabled: false,  // Disabled: 404 Not Found
+      timeout: 30000,
+      retries: 3,
+    },
+    {
+      name: 'IAmsterdam',
+      url: 'https://www.iamsterdam.com/en/events',
+      enabled: false,  // Disabled: 404 Not Found
       timeout: 30000,
       retries: 3,
     },

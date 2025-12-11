@@ -88,6 +88,20 @@ export function normalizeDate(dateStr: string): string {
 }
 
 /**
+ * Check if date is in the future
+ */
+export function isFutureDate(dateStr: string): boolean {
+  try {
+    const date = new Date(dateStr);
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    return date.getTime() >= now.getTime();
+  } catch (error) {
+    return false;
+  }
+}
+
+/**
  * Calculate duration between two dates
  */
 export function calculateDuration(startDate: string, endDate?: string): string {
@@ -103,15 +117,4 @@ export function calculateDuration(startDate: string, endDate?: string): string {
   if (diffDays === 0) return 'Enkele uren';
   if (diffDays === 1) return '1 dag';
   return `${diffDays} dagen`;
-}
-
-/**
- * Check if date is in the future
- */
-export function isFutureDate(dateStr: string): boolean {
-  const date = new Date(dateStr);
-  const now = new Date();
-  now.setHours(0, 0, 0, 0);
-  
-  return date >= now;
 }

@@ -2,6 +2,7 @@ import { BaseScraper } from './base.scraper';
 import { FestivalEvent } from '../types/event.types';
 import { parseShortDate, isFutureDate } from '../utils/date.utils';
 import { generateSleutel, cleanText } from '../utils/string.utils';
+import { normalizeEvent } from '../utils/normalize';
 import { logger } from '../utils/logger';
 
 /**
@@ -43,18 +44,17 @@ export class DjguideScraper extends BaseScraper {
           }
 
           const locatie_evenement = `${venue}, ${city}`;
-          const sleutel = generateSleutel(eventName, event_date, locatie_evenement);
-
-          events.push({
-            event_date,
-            evenement_naam: eventName,
-            locatie_evenement,
-            organisator: '',
-            contact_organisator: '',
-            bron: 'Djguide.nl',
-            duur_evenement: 1,
-            sleutel,
+          
+          // Use normalizeEvent to ensure proper formatting and field names
+          const event = normalizeEvent({
+            name: eventName,
+            date: event_date,
+            location: locatie_evenement,
+            source: 'Djguide.nl',
+            duration: '1'
           });
+
+          events.push(event);
 
           count++;
         } catch (error) {
